@@ -1,33 +1,33 @@
-/*
- * Copyright 2021 HiveMQ GmbH
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 const mqtt = require('mqtt');
+const cors = require('cors');
+const express= require('express')
+const app =express();
+
+
+
+app.use(cors(
+  {
+    origin: ["http://localhost:3000"],
+   //   origin: ["https://asteropen.vercel.app"],
+    methods:["POST","GET"],
+    credentials:true
+  }))
+
 
 // your credentials
 const options = {
-  username: '<your_username>',
-  password: '<your_password>',
+  username: 'abdelrahman',
+  password: 'Nowyouseeme2',
 };
 
 // connect to your cluster, insert your host name and port
-const client = mqtt.connect('tls://your_host:port', options);
-
+const client = mqtt.connect('tls://c1bf4523d3c9437388ac725e6f46c8a3.s2.eu.hivemq.cloud:8883', options);
+let text="not fire"
 // prints a received message
 client.on('message', function(topic, message) {
   console.log(String.fromCharCode.apply(null, message)); // need to convert the byte array to string
+  text=String.fromCharCode.apply(null, message);
 });
 
 // reassurance that the connection worked
@@ -41,5 +41,15 @@ client.on('error', (error) => {
 });
 
 // subscribe and publish to the same topic
-client.subscribe('messages');
-client.publish('messages', 'Hello, this message was received!');
+client.subscribe('message');
+//client.publish('message', 'Hello, this message was received!');
+
+app.post('/api', async (req, res) => {
+  res.json(text)
+})
+
+app.listen(3005, () =>{
+
+console.log('App is lestening on port 3005')
+
+})
