@@ -8,8 +8,8 @@ const app =express();
 
 app.use(cors(
   {
-    origin: ["http://localhost:3000"],
-   //   origin: ["https://asteropen.vercel.app"],
+   // origin: ["http://localhost:3000"],
+      origin: ["https://fire-client-bnl328qor-abdelrahmanelzarka.vercel.app/"],
     methods:["POST","GET"],
     credentials:true
   }))
